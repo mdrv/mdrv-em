@@ -1,0 +1,32 @@
+[package]
+name = "mdrv-em"
+version = "0.0.1"
+edition = "2021"
+license = "MIT"
+publish = false # depends on the gpui fork (not on crates.io)
+repository = "https://github.com/mdrv/mdrv-em"
+description = "Semantic emoji picker: Hyprland layer-shell panel with on-device search"
+
+[[bin]]
+name = "mdrv-em"
+path = "src/main.rs"
+
+[dependencies]
+fastembed = "7"
+# Policy-B (git-tag) form so CI/release runners build without a local
+# checkout; local path form is the dev convention (swap back when
+# iterating on the fork).
+# Policy-B (git-tag) form so CI/release runners build without a local
+# checkout; local path form is the dev convention (swap when iterating
+# on the fork):
+# gpui = { package = "mdrv-gpui-ce", path = "/g/gpui-ce/crates/gpui" }
+gpui = { package = "mdrv-gpui-ce", git = "https://github.com/mdrv/gpui-ce", tag = "mdrv-gpui-0.0.260925.6" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+gpui_platform = { package = "mdrv-gpui-platform", git = "https://github.com/mdrv/gpui-ce", tag = "mdrv-gpui-0.0.260925.6", features = [
+	"wayland",
+	"x11",
+] }
